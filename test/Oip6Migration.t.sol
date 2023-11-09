@@ -8,6 +8,7 @@ contract Oip6MigrationTest is Test {
     Oip6Migration migration;
     MockERC20 public oldToken;
     MockERC20 public newToken;
+    MockERC20 public otherToken;
     address public deployer;
     address public user1;
     address public user2;
@@ -21,8 +22,10 @@ contract Oip6MigrationTest is Test {
 
         oldToken = new MockERC20(1_000_000, "OLD");
         newToken = new MockERC20(1_000_000, "NEW");
+        otherToken = new MockERC20(1_000_000, "OTHER");
         vm.label(address(oldToken), "oldToken");
         vm.label(address(newToken), "newToken");
+        vm.label(address(otherToken), "otherToken");
         vm.label(user1, "user");
 
         oldToken.transfer(user1, 10_000);
@@ -141,9 +144,21 @@ contract Oip6MigrationTest is Test {
         assertEq(oldToken.balanceOf(address(migration)), 5_000);
     }
 
-    // function testFail_Subtract43() public {
-    //     testNumber -= 43;
-    // }
+    function test_retrievingErc20_unauthorized() public {
+        vm.prank(deployer);
+        otherToken.transfer(address(migration), 100_000);
+        vm.prank(user1);
+        vm.expectRevert("Ownable: caller is not the owner");
+        migration.sendTokens(address(otherToken), user1, 10_000);
+    }
+
+    function test_retrievingErc20() public {
+        vm.prank(deployer);
+        otherToken.transfer(address(migration), 100_000);
+        vm.prank(deployer);
+        migration.sendTokens(address(otherToken), user1, 10_000);
+        assertEq(otherToken.balanceOf(user1), 10_000);
+    }
 }
 
 // TODO

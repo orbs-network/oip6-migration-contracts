@@ -1,66 +1,36 @@
 import "dotenv/config";
-import { HardhatUserConfig } from "hardhat/config";
+import { HardhatUserConfig, task } from "hardhat/config";
 import "@typechain/hardhat";
 import "@nomiclabs/hardhat-web3";
 import "hardhat-gas-reporter";
 import "hardhat-tracer";
-import { hardhatDefaultConfig } from "@defi.org/web3-candies/dist/hardhat";
+import { askDeployer, askFees, deploy, hardhatDefaultConfig } from "@defi.org/web3-candies/dist/hardhat";
 import _ from "lodash";
 import "hardhat-watcher";
 import "solidity-coverage";
+import { deployOip6Migration } from "./deployment/deploy";
+import { config } from "./deployment/config";
 
-// type Contract = "InsuredVesting" | "Vesting";
+task("deploy-contract", "Deploy Excited contract").setAction(async (args, hre) => {
+  const contractName = "Oip6Migration";
 
-// task("deploy-contract", "Deploy Excited contract")
-//   .addParam<Contract>("contract", "Contract name")
-//   .setAction(async (args, hre) => {
-//     let contractName: string;
-//     let config: InsuredVestingConfig | VestingConfig;
+  console.log(`Running deployment script for ${contractName} contract...`);
 
-//     switch (args.contract) {
-//       case "InsuredVesting":
-//         // TODO: confirm name
-//         contractName = "InsuredVesting";
-//         config = require("./deployment/insured-vesting-v1/config").config;
-//         break;
-//       case "Vesting":
-//         contractName = "Vesting";
-//         config = require("./deployment/vesting-v1/config").config;
-//       default:
-//         console.error("Invalid contract name");
-//         return;
-//     }
+  console.log("--------------------------------------");
 
-//     console.log("config :", config);
-//     console.log(`Running deployment script for ${contractName} contract...`);
+  const deployer = process.env.DEPLOYER || (await askDeployer());
+  const { max, tip } = await askFees();
 
-//     console.log("--------------------------------------");
+  console.log("Deployer: ", deployer);
+  console.log("Max fee: ", Number(max));
+  console.log("Tip: ", Number(tip));
 
-//     console.log("Running tests...");
-//     const result = await hre.run("test", { bail: true });
-//     if (result === 1) {
-//       console.log("Tests failed! Aborting deployment...");
-//       return;
-//     }
 
-//     const deployer = process.env.DEPLOYER || (await askDeployer());
-//     const { max, tip } = await askFees();
-
-//     console.log("Deployer: ", deployer);
-//     console.log("Max fee: ", Number(max));
-//     console.log("Tip: ", Number(tip));
-
-//     if (!args.dry) {
-//       console.log("Deploying...");
-
-//       switch (args.contract) {
-//         case "InsuredVesting":
-//           await deployInsuredVestingV1(deploy, config as InsuredVestingConfig, max, tip);
-//         case "Vesting":
-//           await deployVestingV1(deploy, config as VestingConfig, max, tip);
-//       }
-//     }
-//   });
+  if (!args.dry) {
+    console.log("Deploying...");
+    await deployOip6Migration(deploy, max, tip, hre.network.config.chainId!);
+  }
+});
 
 export default _.merge(hardhatDefaultConfig(), {
   networks: {
