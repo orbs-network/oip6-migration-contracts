@@ -37,11 +37,10 @@ export default _.merge(hardhatDefaultConfig(), {
   },
   etherscan: {
     apiKey: {
-      avalanche: "avascan",
+      avalanche: process.env.AVA_ETHERSCAN_API_KEY,
+      bsc: process.env.BSC_ETHERSCAN_API_KEY,
+      opera: process.env.FTM_ETHERSCAN_API_KEY,
     },
-  },
-  sourcify: {
-    enabled: true,
   },
   mocha: {
     bail: false,

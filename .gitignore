@@ -3,6 +3,7 @@
 artifacts/
 cache/
 typechain-hardhat/
+deployments/
 
 # Created by https://www.toptal.com/developers/gitignore/api/zsh,node,macos,intellij+all,solidity,soliditytruffle,sublimetext
 # Edit at https://www.toptal.com/developers/gitignore?templates=zsh,node,macos,intellij+all,solidity,soliditytruffle,sublimetext
