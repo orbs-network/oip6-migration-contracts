@@ -1,8 +1,8 @@
 pragma solidity 0.8.19;
 
-import {Oip6Migration} from "../contracts/Oip6Migration.sol";
+import {Oip6Migration} from "../src/Oip6Migration.sol";
 import {Test} from "forge-std/Test.sol";
-import {MockERC20} from "../contracts/test/MockERC20.sol";
+import {MockERC20} from "../src/test/MockERC20.sol";
 
 contract Oip6MigrationTest is Test {
     Oip6Migration migration;

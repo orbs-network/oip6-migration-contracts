@@ -7,19 +7,19 @@ import { erc20 } from "@defi.org/web3-candies";
 
 const chainsById: Record<number, string> = {
   43114: "AVA",
-  250: "FANTOM",
+  250: "FTM",
   56: "BSC",
 };
 
 const oldTokens: Record<string, string> = {
   AVA: "0x340fe1d898eccaad394e2ba0fc1f93d27c7b717a",
-  FANTOM: "0x3e01b7e242d5af8064cb9a8f9468ac0f8683617c",
+  FTM: "0x3e01b7e242d5af8064cb9a8f9468ac0f8683617c",
   BSC: "0xebd49b26169e1b52c04cfd19fcf289405df55f80",
 };
 
 const newTokens: Record<string, string> = {
   AVA: "0x3Ab1C9aDb065F3FcA0059652Cd7A52B05C98f9a9",
-  FANTOM: "0x43a8cab15D06d3a5fE5854D714C37E7E9246F170",
+  FTM: "0x43a8cab15D06d3a5fE5854D714C37E7E9246F170",
   BSC: "0x43a8cab15D06d3a5fE5854D714C37E7E9246F170",
 };
 
